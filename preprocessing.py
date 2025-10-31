@@ -3,6 +3,7 @@ import nltk
 import pandas as pd
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+from Data_helper import *
 
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -36,8 +37,8 @@ def preprocess_text(text):
     return text
 
 if __name__ == "__main__":
-    df = pd.read_csv(r"C:\Users\hom\Downloads\spam.csv", encoding='latin-1')
-
+    df = Load_data()
+    
     df = df[['class', 'message']]
     df.columns = ['label', 'text']
 
@@ -45,8 +46,12 @@ if __name__ == "__main__":
 
     df['clean_text'] = df['text'].apply(preprocess_text)
 
+    df = df.drop(columns=['text'])
+    df = df.dropna()
+    df = df.drop_duplicates()
+    
     print("\n✅ first five after preprocessing")
-    print(df[['label', 'text', 'clean_text']].head())
+    print(df[['label', 'clean_text']].head())
 
-    df.to_csv(r"C:\Users\hom\Downloads\spam_cleaned.csv", index=False, encoding='utf-8')
+    Save_data(df)
     print("\n💾 spam cleaned saved")
