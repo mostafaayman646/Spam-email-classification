@@ -5,8 +5,9 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from Data_helper import *
 
-nltk.download('stopwords')
 nltk.download('wordnet')
+nltk.download('omw-1.4')
+nltk.download('stopwords')
 
 def clean_text(text):
    

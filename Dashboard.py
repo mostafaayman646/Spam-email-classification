@@ -1,9 +1,10 @@
 import streamlit as st
 import pandas as pd
 import pickle
+from preprocessing import *
+from sklearn.feature_extraction.text import CountVectorizer
 
 st.title("📩 Spam / Ham Classifier App")
-
 
 try:
     model = pickle.load(open('Model/XGBoost_pipeline.pkl', 'rb'))
@@ -17,7 +18,6 @@ st.write("## 🔍 Try it yourself!")
 
 user_input = st.text_area("Enter a message:")
 
-
 if st.button("Predict"):
     if not user_input.strip():
         st.warning("Please enter a message to classify.")
@@ -25,7 +25,9 @@ if st.button("Predict"):
         st.info("Model not loaded yet — please upload model.pkl first.")
     else:
         try:
-            prediction = model.predict([user_input])[0]
+            # Preprocess the input after checking it's not empty
+            preprocessed_input = preprocess_text(user_input)
+            prediction = model.predict([preprocessed_input])[0]
 
             if prediction == 1:
                 st.error("🚫 SPAM Message")
