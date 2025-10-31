@@ -17,6 +17,8 @@ from Data_helper import *
 from model_utils import *
 
 if __name__ == '__main__':
+    RANDOM_STATE = 42
+    
     df = Load_data('Data/spam_cleaned.csv')
     df = df.dropna()
     df = df.drop_duplicates()
@@ -24,7 +26,7 @@ if __name__ == '__main__':
     X = df['clean_text']
     Y = df['label']
 
-    x_train,x_test,y_train,y_test = train_test_split(X,Y,test_size=0.2,stratify=Y)
+    x_train,x_test,y_train,y_test = train_test_split(X,Y,test_size=0.2,stratify=Y,random_state=RANDOM_STATE)
 
     pipe = Pipeline([
         ('bow', CountVectorizer()),
@@ -33,7 +35,7 @@ if __name__ == '__main__':
             max_depth=7,
             n_estimators=80,
             use_label_encoder=False,
-            eval_metric='auc'
+            eval_metric='auc',
         ))
     ])
 
@@ -55,4 +57,4 @@ if __name__ == '__main__':
     plt.ylabel("True Label")
     plt.show()
     
-    save_model(pipe)
+    # save_model(pipe)
