@@ -4,12 +4,6 @@ import pickle
 
 st.title("📩 Spam / Ham Classifier App")
 
-uploaded_data = 'Data/spam_cleaned.csv'
-df = pd.read_csv(uploaded_data)
-
-st.sidebar.header("📊 Data Preview")
-st.sidebar.dataframe(df.head())
-
 
 try:
     model = pickle.load(open('Model/XGBoost_pipeline.pkl', 'rb'))
@@ -22,6 +16,7 @@ except Exception as e:
 st.write("## 🔍 Try it yourself!")
 
 user_input = st.text_area("Enter a message:")
+
 
 if st.button("Predict"):
     if not user_input.strip():
